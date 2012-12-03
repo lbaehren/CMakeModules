@@ -1,5 +1,5 @@
 # +-----------------------------------------------------------------------------+
-# |   Copyright (C) 2011                                                        |
+# |   Copyright (C) 2012                                                        |
 # |   Lars B"ahren (lbaehren@gmail.com)                                         |
 # |                                                                             |
 # |   This program is free software; you can redistribute it and/or modify      |
