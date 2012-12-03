@@ -1,0 +1,91 @@
+
+## ==============================================================================
+##
+##  Package information
+##
+## ==============================================================================
+
+set (<PACKAGE>_VERSION        "" )
+set (<PACKAGE>_SOURCE_ARCHIVE "" )
+set (<PACKAGE>_URL            "" )
+set (<PACKAGE>_SVN            "" )
+
+## ==============================================================================
+##
+##  Options
+##
+## ==============================================================================
+
+option (<PACKAGE>_FORCE_BUILD    "Force build and installation of package?" NO )
+option (<PACKAGE>_FROM_REPOS     "Install package from repository?"         NO )
+option (<PACKAGE>_ENABLE_TESTING "Enable testing and experimental builds?"  YES )
+
+## Handle options
+
+if (<PACKAGE>_ENABLE_TESTING)
+  include (CTest)
+  enable_testing()
+endif (<PACKAGE>_ENABLE_TESTING)
+
+## ==============================================================================
+##
+##  System inspection
+##
+## ==============================================================================
+
+find_package (<PACKAGE>)
+
+## ==============================================================================
+##
+##  Build instructions
+##
+## ==============================================================================
+
+if (NOT <PACKAGE>_FOUND OR <PACKAGE>_FORCE_BUILD)
+
+  ## Locate source file to build from
+
+  find_file (<PACKAGE>_SOURCE ${<PACKAGE>_SOURCE_ARCHIVE}
+    PATHS ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+  if (NOT <PACKAGE>_SOURCE)
+    set (<PACKAGE>_SOURCE ${<PACKAGE>_URL})
+  endif (NOT <PACKAGE>_SOURCE)
+
+  ## Build package from source
+
+  if (<PACKAGE>_FROM_REPOS)
+
+    ExternalProject_Add (<package>
+      PREFIX ${CMAKE_CURRENT_BINARY_DIR}
+      DOWNLOAD_DIR download
+      SOURCE_DIR source
+      SVN_REPOSITORY ${<PACKAGE>_SVN}
+      BUILD_IN_SOURCE 1
+      CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/source/configure --prefix=${CMAKE_INSTALL_PREFIX}
+      INSTALL_COMMAND ${PORT_INSTALL_COMMAND} make install
+      )
+
+  else (<PACKAGE>_FROM_REPOS)
+
+    ExternalProject_Add (<package>
+      PREFIX ${CMAKE_CURRENT_BINARY_DIR}
+      DOWNLOAD_DIR download
+      SOURCE_DIR source
+      URL ${<PACKAGE>_SOURCE}
+      BUILD_IN_SOURCE 1
+      CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/source/configure --prefix=${CMAKE_INSTALL_PREFIX}
+      INSTALL_COMMAND ${PORT_INSTALL_COMMAND} make install
+      )
+
+  endif (<PACKAGE>_FROM_REPOS)
+
+else (NOT <PACKAGE>_FOUND OR <PACKAGE>_FORCE_BUILD)
+
+  add_custom_target (<package>
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "[<package>] Found system-wide installation; skipping rebuild!"
+    )
+
+endif (NOT <PACKAGE>_FOUND OR <PACKAGE>_FORCE_BUILD)
