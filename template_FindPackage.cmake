@@ -35,7 +35,8 @@ if (NOT <PACKAGE>_FOUND)
   ##_____________________________________________________________________________
   ## Check for the header files
 
-  find_path (<PACKAGE>_INCLUDES <header file(s)>
+  find_path (<PACKAGE>_INCLUDES
+    NAMES <header file(s)>
     HINTS ${<PACKAGE>_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
