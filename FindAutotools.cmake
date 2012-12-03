@@ -42,14 +42,14 @@ if (NOT AUTOTOOLS_FOUND)
       )
 
     string (TOUPPER ${_program} _varProgram)
-    
+
     find_program (${_varProgram}_EXECUTABLE ${_program}
       HINTS ${AUTOTOOLS_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
       PATH_SUFFIXES bin
       )
-    
+
   endforeach (_program)
-  
+
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
 

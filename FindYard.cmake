@@ -28,19 +28,19 @@
 #  YARD_LFLAGS     = Linker flags (optional)
 
 if (NOT YARD_FOUND)
-    
+
   if (NOT YARD_ROOT_DIR)
     set (YARD_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT YARD_ROOT_DIR)
-  
+
   ##_____________________________________________________________________________
   ## Check for the executable
-  
+
   find_program (YARD_EXECUTABLE yard
     HINTS ${YARD_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
-  
+
   ##_____________________________________________________________________________
   ## Extract program version
 
@@ -70,14 +70,14 @@ if (NOT YARD_FOUND)
 	list(GET YARD_VERSION_LIST 1 YARD_VERSION_MINOR)
 	list(GET YARD_VERSION_LIST 2 YARD_VERSION_PATCH)
       endif (YARD_VERSION)
-      
+
     endif (NOT YARD_RESULT_VARIABLE)
 
   endif (YARD_EXECUTABLE)
-  
+
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
-  
+
   if (YARD_EXECUTABLE)
     set (YARD_FOUND TRUE)
   else (YARD_EXECUTABLE)
@@ -91,7 +91,7 @@ if (NOT YARD_FOUND)
       endif (NOT YARD_LIBRARIES)
     endif (NOT YARD_FIND_QUIETLY)
   endif (YARD_EXECUTABLE)
-  
+
   if (YARD_FOUND)
     if (NOT YARD_FIND_QUIETLY)
       message (STATUS "Found components for YARD")
@@ -104,14 +104,14 @@ if (NOT YARD_FOUND)
       message (FATAL_ERROR "Could not find YARD!")
     endif (YARD_FIND_REQUIRED)
   endif (YARD_FOUND)
-  
+
   ##_____________________________________________________________________________
   ## Mark advanced variables
-  
+
   mark_as_advanced (
     YARD_ROOT_DIR
     YARD_INCLUDES
     YARD_LIBRARIES
     )
-  
+
 endif (NOT YARD_FOUND)

@@ -27,30 +27,30 @@
 #  YAML_LFLAGS     = Linker flags (optional)
 
 if (NOT YAML_FOUND)
-    
+
   if (NOT YAML_ROOT_DIR)
     set (YAML_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT YAML_ROOT_DIR)
-  
+
   ##_____________________________________________________________________________
   ## Check for the header files
-  
+
   find_path (YAML_INCLUDES yaml-cpp/yaml.h yaml-cpp/node.h
     HINTS ${YAML_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
-  
+
   ##_____________________________________________________________________________
   ## Check for the library
-  
+
   find_library (YAML_LIBRARIES yaml-cpp
     HINTS ${YAML_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
-  
+
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
-  
+
   if (YAML_INCLUDES AND YAML_LIBRARIES)
     set (YAML_FOUND TRUE)
   else (YAML_INCLUDES AND YAML_LIBRARIES)
@@ -64,7 +64,7 @@ if (NOT YAML_FOUND)
       endif (NOT YAML_LIBRARIES)
     endif (NOT YAML_FIND_QUIETLY)
   endif (YAML_INCLUDES AND YAML_LIBRARIES)
-  
+
   if (YAML_FOUND)
     if (NOT YAML_FIND_QUIETLY)
       message (STATUS "Found components for YAML")
@@ -77,17 +77,17 @@ if (NOT YAML_FOUND)
       message (FATAL_ERROR "Could not find YAML!")
     endif (YAML_FIND_REQUIRED)
   endif (YAML_FOUND)
-  
+
   ## Compatibility setting
   set (YAML_CPP_FOUND ${YAML_FOUND})
-  
+
   ##_____________________________________________________________________________
   ## Mark advanced variables
-  
+
   mark_as_advanced (
     YAML_ROOT_DIR
     YAML_INCLUDES
     YAML_LIBRARIES
     )
-  
+
 endif (NOT YAML_FOUND)

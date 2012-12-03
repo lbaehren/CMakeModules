@@ -27,25 +27,25 @@
 #  YAZ_LFLAGS     = Linker flags (optional)
 
 if (NOT YAZ_FOUND)
-    
+
   if (NOT YAZ_ROOT_DIR)
     set (YAZ_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT YAZ_ROOT_DIR)
-  
+
   ##_____________________________________________________________________________
   ## Check for the header files
-  
+
   find_path (YAZ_INCLUDES
     NAMES yaz/yconfig.h yaz/backend.h
     HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
-  
+
   ##_____________________________________________________________________________
   ## Check for the library
 
   set (YAZ_LIBRARIES "")
-  
+
   find_library (YAZ_YAZ_LIBRARY yaz
     HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
@@ -61,7 +61,7 @@ if (NOT YAZ_FOUND)
   if (YAZ_YAZ_ICU_LIBRARY)
     list (APPEND YAZ_LIBRARIES ${YAZ_YAZ_ICU_LIBRARY})
   endif (YAZ_YAZ_ICU_LIBRARY)
-  
+
   find_library (YAZ_YAZ_SERVER_LIBRARY yaz_server
     HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
@@ -72,12 +72,12 @@ if (NOT YAZ_FOUND)
 
   ##_____________________________________________________________________________
   ## Check for the executable
-  
+
   find_program (YAZ_CLIENT_EXECUTABLE yaz-client
     HINTS ${YAZ_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
-  
+
   find_program (YAZ_CONFIG_EXECUTABLE yaz-config
     HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
@@ -110,10 +110,10 @@ if (NOT YAZ_FOUND)
     endif (YAZ_VERSION)
 
   endif (YAZ_CONFIG_EXECUTABLE)
-  
+
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
-  
+
   if (YAZ_INCLUDES AND YAZ_LIBRARIES)
     set (YAZ_FOUND TRUE)
   else (YAZ_INCLUDES AND YAZ_LIBRARIES)
@@ -127,7 +127,7 @@ if (NOT YAZ_FOUND)
       endif (NOT YAZ_LIBRARIES)
     endif (NOT YAZ_FIND_QUIETLY)
   endif (YAZ_INCLUDES AND YAZ_LIBRARIES)
-  
+
   if (YAZ_FOUND)
     if (NOT YAZ_FIND_QUIETLY)
       message (STATUS "Found components for YAZ")
@@ -140,10 +140,10 @@ if (NOT YAZ_FOUND)
       message (FATAL_ERROR "Could not find YAZ!")
     endif (YAZ_FIND_REQUIRED)
   endif (YAZ_FOUND)
-  
+
   ##_____________________________________________________________________________
   ## Mark advanced variables
-  
+
   mark_as_advanced (
     YAZ_ROOT_DIR
     YAZ_INCLUDES
@@ -152,5 +152,5 @@ if (NOT YAZ_FOUND)
     YAZ_YAZ_ICU_LIBRARY
     YAZ_YAZ_SERVER_LIBRARY
     )
-  
+
 endif (NOT YAZ_FOUND)
