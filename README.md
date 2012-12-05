@@ -13,6 +13,15 @@ I have been accumulating a number of search modules, which not only I started
 moving around between different software projects, but which also might be useful
 to a wider audience.
 
+## Testing
+
+You can test the provided modules via the provided CMakeLists.txt script,
+which will set up a simple project including the modules:
+
+    mkdir build
+    cd build
+    cmake ..
+
 ## Links
 
 * CMake (www.cmake.org)
