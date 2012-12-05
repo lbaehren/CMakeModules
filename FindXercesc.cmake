@@ -88,21 +88,9 @@ if (NOT XERCESC_FOUND)
   
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
-  
-  if (XERCESC_INCLUDES AND XERCESC_LIBRARIES)
-    set (XERCESC_FOUND TRUE)
-  else (XERCESC_INCLUDES AND XERCESC_LIBRARIES)
-    set (XERCESC_FOUND FALSE)
-    if (NOT XERCESC_FIND_QUIETLY)
-      if (NOT XERCESC_INCLUDES)
-	message (STATUS "Unable to find XERCES header files!")
-      endif (NOT XERCESC_INCLUDES)
-      if (NOT XERCESC_LIBRARIES)
-	message (STATUS "Unable to find XERCES library files!")
-      endif (NOT XERCESC_LIBRARIES)
-    endif (NOT XERCESC_FIND_QUIETLY)
-  endif (XERCESC_INCLUDES AND XERCESC_LIBRARIES)
-  
+
+  find_package_handle_standard_args (XERCESC DEFAULT_MSG XERCESC_LIBRARIES XERCESC_INCLUDES)
+
   if (XERCESC_FOUND)
     if (NOT XERCESC_FIND_QUIETLY)
       message (STATUS "Found components for XERCES")

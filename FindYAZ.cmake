@@ -37,7 +37,7 @@ if (NOT YAZ_FOUND)
 
   find_path (YAZ_INCLUDES
     NAMES yaz/yconfig.h yaz/backend.h
-    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
 
@@ -47,7 +47,7 @@ if (NOT YAZ_FOUND)
   set (YAZ_LIBRARIES "")
 
   find_library (YAZ_YAZ_LIBRARY yaz
-    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZ_YAZ_LIBRARY)
@@ -55,7 +55,7 @@ if (NOT YAZ_FOUND)
   endif (YAZ_YAZ_LIBRARY)
 
   find_library (YAZ_YAZ_ICU_LIBRARY yaz_icu
-    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZ_YAZ_ICU_LIBRARY)
@@ -63,7 +63,7 @@ if (NOT YAZ_FOUND)
   endif (YAZ_YAZ_ICU_LIBRARY)
 
   find_library (YAZ_YAZ_SERVER_LIBRARY yaz_server
-    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZ_YAZ_SERVER_LIBRARY)
@@ -74,12 +74,12 @@ if (NOT YAZ_FOUND)
   ## Check for the executable
 
   find_program (YAZ_CLIENT_EXECUTABLE yaz-client
-    HINTS ${YAZ_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZ_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
   find_program (YAZ_CONFIG_EXECUTABLE yaz-config
-    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
@@ -113,6 +113,8 @@ if (NOT YAZ_FOUND)
 
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
+
+  find_package_handle_standard_args (YAZ DEFAULT_MSG YAZ_LIBRARIES YAZ_INCLUDES)
 
   if (YAZ_INCLUDES AND YAZ_LIBRARIES)
     set (YAZ_FOUND TRUE)

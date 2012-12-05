@@ -36,7 +36,7 @@ if (NOT YASM_FOUND)
 
   find_path (YASM_INCLUDES
     NAMES libyasm.h libyasm/valparam.h
-    HINTS ${YASM_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YASM_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include include/libyasm include/yasm
     )
 
@@ -44,7 +44,7 @@ if (NOT YASM_FOUND)
   ## Check for the library
 
   find_library (YASM_LIBRARIES yasm
-    HINTS ${YASM_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YASM_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
 
@@ -52,7 +52,7 @@ if (NOT YASM_FOUND)
   ## Check for the executable
 
   find_program (YASM_EXECUTABLE yasm
-    HINTS ${YASM_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YASM_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 

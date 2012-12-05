@@ -37,7 +37,7 @@ if (NOT YARD_FOUND)
   ## Check for the executable
 
   find_program (YARD_EXECUTABLE yard
-    HINTS ${YARD_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YARD_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
@@ -78,19 +78,7 @@ if (NOT YARD_FOUND)
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
 
-  if (YARD_EXECUTABLE)
-    set (YARD_FOUND TRUE)
-  else (YARD_EXECUTABLE)
-    set (YARD_FOUND FALSE)
-    if (NOT YARD_FIND_QUIETLY)
-      if (NOT YARD_INCLUDES)
-	message (STATUS "Unable to find YARD header files!")
-      endif (NOT YARD_INCLUDES)
-      if (NOT YARD_LIBRARIES)
-	message (STATUS "Unable to find YARD library files!")
-      endif (NOT YARD_LIBRARIES)
-    endif (NOT YARD_FIND_QUIETLY)
-  endif (YARD_EXECUTABLE)
+  find_package_handle_standard_args (YARD DEFAULT_MSG YARD_LIBRARIES YARD_INCLUDES)
 
   if (YARD_FOUND)
     if (NOT YARD_FIND_QUIETLY)

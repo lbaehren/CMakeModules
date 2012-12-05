@@ -37,7 +37,7 @@ if (NOT YAZPP_FOUND)
 
   find_path (YAZPP_INCLUDES
     NAMES yazpp/z-assoc.h yazpp/z-query.h yazpp/socket-observer.h
-    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
 
@@ -48,7 +48,7 @@ if (NOT YAZPP_FOUND)
 
   ## libyazpp
   find_library (YAZPP_YAZPP_LIBRARY yazpp
-    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZPP_YAZPP_LIBRARY)
@@ -57,7 +57,7 @@ if (NOT YAZPP_FOUND)
 
   ## libzoompp
   find_library (YAZPP_ZOOMPP_LIBRARY zoompp
-    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZPP_ZOOMPP_LIBRARY)
@@ -68,7 +68,7 @@ if (NOT YAZPP_FOUND)
   ## Check for the executable
 
   find_program (YAZPP_CONFIG_EXECUTABLE yazpp-config
-    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
@@ -86,19 +86,7 @@ if (NOT YAZPP_FOUND)
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
 
-  if (YAZPP_INCLUDES AND YAZPP_LIBRARIES)
-    set (YAZPP_FOUND TRUE)
-  else (YAZPP_INCLUDES AND YAZPP_LIBRARIES)
-    set (YAZPP_FOUND FALSE)
-    if (NOT YAZPP_FIND_QUIETLY)
-      if (NOT YAZPP_INCLUDES)
-	message (STATUS "Unable to find YAZPP header files!")
-      endif (NOT YAZPP_INCLUDES)
-      if (NOT YAZPP_LIBRARIES)
-	message (STATUS "Unable to find YAZPP library files!")
-      endif (NOT YAZPP_LIBRARIES)
-    endif (NOT YAZPP_FIND_QUIETLY)
-  endif (YAZPP_INCLUDES AND YAZPP_LIBRARIES)
+  find_package_handle_standard_args (YAZPP DEFAULT_MSG YAZPP_LIBRARIES YAZPP_INCLUDES)
 
   if (YAZPP_FOUND)
     if (NOT YAZPP_FIND_QUIETLY)

@@ -37,7 +37,7 @@ if (NOT <PACKAGE>_FOUND)
 
   find_path (<PACKAGE>_INCLUDES
     NAMES <header file(s)>
-    HINTS ${<PACKAGE>_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${<PACKAGE>_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
 
@@ -45,7 +45,7 @@ if (NOT <PACKAGE>_FOUND)
   ## Check for the library
 
   find_library (<PACKAGE>_LIBRARIES <package name>
-    HINTS ${<PACKAGE>_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${<PACKAGE>_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
 
@@ -53,7 +53,7 @@ if (NOT <PACKAGE>_FOUND)
   ## Check for the executable
 
   find_program (<PACKAGE>_EXECUTABLE <package name>
-    HINTS ${<PACKAGE>_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    PATHS ${<PACKAGE>_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
