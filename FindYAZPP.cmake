@@ -37,7 +37,7 @@ if (NOT YAZPP_FOUND)
 
   find_path (YAZPP_INCLUDES
     NAMES yazpp/z-assoc.h yazpp/z-query.h yazpp/socket-observer.h
-    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
 
@@ -48,7 +48,7 @@ if (NOT YAZPP_FOUND)
 
   ## libyazpp
   find_library (YAZPP_YAZPP_LIBRARY yazpp
-    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZPP_YAZPP_LIBRARY)
@@ -57,7 +57,7 @@ if (NOT YAZPP_FOUND)
 
   ## libzoompp
   find_library (YAZPP_ZOOMPP_LIBRARY zoompp
-    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZPP_ZOOMPP_LIBRARY)
@@ -68,7 +68,7 @@ if (NOT YAZPP_FOUND)
   ## Check for the executable
 
   find_program (YAZPP_CONFIG_EXECUTABLE yazpp-config
-    PATHS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZPP_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 

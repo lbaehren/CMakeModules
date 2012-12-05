@@ -37,7 +37,7 @@ if (NOT YAZ_FOUND)
 
   find_path (YAZ_INCLUDES
     NAMES yaz/yconfig.h yaz/backend.h
-    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES include
     )
 
@@ -47,7 +47,7 @@ if (NOT YAZ_FOUND)
   set (YAZ_LIBRARIES "")
 
   find_library (YAZ_YAZ_LIBRARY yaz
-    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZ_YAZ_LIBRARY)
@@ -55,7 +55,7 @@ if (NOT YAZ_FOUND)
   endif (YAZ_YAZ_LIBRARY)
 
   find_library (YAZ_YAZ_ICU_LIBRARY yaz_icu
-    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZ_YAZ_ICU_LIBRARY)
@@ -63,7 +63,7 @@ if (NOT YAZ_FOUND)
   endif (YAZ_YAZ_ICU_LIBRARY)
 
   find_library (YAZ_YAZ_SERVER_LIBRARY yaz_server
-    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES lib
     )
   if (YAZ_YAZ_SERVER_LIBRARY)
@@ -74,12 +74,12 @@ if (NOT YAZ_FOUND)
   ## Check for the executable
 
   find_program (YAZ_CLIENT_EXECUTABLE yaz-client
-    PATHS ${YAZ_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZ_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
   find_program (YAZ_CONFIG_EXECUTABLE yaz-config
-    PATHS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YAZ_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
@@ -94,17 +94,17 @@ if (NOT YAZ_FOUND)
       )
 
     if (YAZ_VERSION)
-        ## Convert string to list of numbers
-	string (REGEX REPLACE "\\." ";" YAZ_VERSION_LIST ${YAZ_VERSION})
-	## Retrieve individual elements in the list
-	list (GET YAZ_VERSION_LIST 0 YAZ_VERSION_MAJOR)
-	list (GET YAZ_VERSION_LIST 1 YAZ_VERSION_MINOR)
-	list (GET YAZ_VERSION_LIST 2 YAZ_VERSION_PATCH)
-	## Assemble version string, which can be used for comparison
-	math (EXPR YAZ_VERSION_STRING_MAJOR "${YAZ_VERSION_MAJOR}*100")
-	math (EXPR YAZ_VERSION_STRING_MINOR "${YAZ_VERSION_MINOR}*100")
-	math (EXPR YAZ_VERSION_STRING_PATCH "${YAZ_VERSION_PATCH}*100")
-	set (YAZ_VERSION_STRING "${YAZ_VERSION_STRING_MAJOR}${YAZ_VERSION_STRING_MINOR}${YAZ_VERSION_STRING_PATCH}")
+      ## Convert string to list of numbers
+      string (REGEX REPLACE "\\." ";" YAZ_VERSION_LIST ${YAZ_VERSION})
+      ## Retrieve individual elements in the list
+      list (GET YAZ_VERSION_LIST 0 YAZ_VERSION_MAJOR)
+      list (GET YAZ_VERSION_LIST 1 YAZ_VERSION_MINOR)
+      list (GET YAZ_VERSION_LIST 2 YAZ_VERSION_PATCH)
+      ## Assemble version string, which can be used for comparison
+      math (EXPR YAZ_VERSION_STRING_MAJOR "${YAZ_VERSION_MAJOR}*100")
+      math (EXPR YAZ_VERSION_STRING_MINOR "${YAZ_VERSION_MINOR}*100")
+      math (EXPR YAZ_VERSION_STRING_PATCH "${YAZ_VERSION_PATCH}*100")
+      set (YAZ_VERSION_STRING "${YAZ_VERSION_STRING_MAJOR}${YAZ_VERSION_STRING_MINOR}${YAZ_VERSION_STRING_PATCH}")
     endif (YAZ_VERSION)
 
   endif (YAZ_CONFIG_EXECUTABLE)

@@ -37,7 +37,7 @@ if (NOT YARD_FOUND)
   ## Check for the executable
 
   find_program (YARD_EXECUTABLE yard
-    PATHS ${YARD_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
+    HINTS ${YARD_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
 
