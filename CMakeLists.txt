@@ -27,21 +27,21 @@ cmake_policy (VERSION 2.8.2)
 ##
 ## ==============================================================================
 
-## Macro to handle standard arguments
+## Standard modules
 
 include (FindPackageHandleStandardArgs)
-
-## Test driver
-
 include (CTest)
+
 enable_testing()
 
-## Add local directory to module path
+## Custom modules
 
 set (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}" CACHE PATH
   "CMake module path"
   FORCE
   )
+
+include (DetectOS)
 
 ## ==============================================================================
 ##
@@ -76,18 +76,35 @@ endforeach ()
 ##
 ## ==============================================================================
 
-message (STATUS "------------------------------------------------------------"   )
-message (STATUS "[prometheus-sumo] Configuration summary."                       )
-message (STATUS "------------------------------------------------------------ "  )
+message (STATUS "------------------------------------------------------------"  )
+message (STATUS "[prometheus-sumo] Configuration summary."                      )
+message (STATUS "------------------------------------------------------------ " )
 
-message (STATUS " System configuration:"                                         )
-message (STATUS " .. Processor type .............. = ${CMAKE_SYSTEM_PROCESSOR}"  )
-message (STATUS " .. CMake executable ............ = ${CMAKE_COMMAND}"           )
-message (STATUS " .. CMake version ............... = ${CMAKE_VERSION}"           )
-message (STATUS " .. System name ................. = ${CMAKE_SYSTEM}"            )
-message (STATUS " .. Operating system name ....... = ${CMAKE_OS_NAME}"           )
-message (STATUS " .. C++ compiler ................ = ${CMAKE_CXX_COMPILER}"      )
-message (STATUS " .. C compiler .................. = ${CMAKE_C_COMPILER}"        )
-message (STATUS " .. size(void*) ................. = ${CMAKE_SIZEOF_VOID_P}"     )
+message (STATUS " System configuration:"                                       )
+message (STATUS " .. Processor type ............ = ${CMAKE_SYSTEM_PROCESSOR}"  )
+message (STATUS " .. CMake executable .......... = ${CMAKE_COMMAND}"           )
+message (STATUS " .. CMake version ............. = ${CMAKE_VERSION}"           )
+message (STATUS " .. System/OS name ............ = ${CMAKE_SYSTEM_NAME} / ${CMAKE_OS_NAME}")
+message (STATUS " .. System version ............ = ${CMAKE_SYSTEM_VERSION}"    )
+message (STATUS " .. C++ compiler .............. = ${CMAKE_CXX_COMPILER}"      )
+message (STATUS " .. C compiler ................ = ${CMAKE_C_COMPILER}"        )
+message (STATUS " .. size(void*) ............... = ${CMAKE_SIZEOF_VOID_P}"     )
 
-message (STATUS "------------------------------------------------------------"   )
+message (STATUS " Package listing:")
+message (STATUS " .. Autotools ................. = ${AUTOTOOLS_FOUND}"         )
+message (STATUS " .. Blitz++ ................... = ${BLITZ_FOUND}"             )
+message (STATUS " .. CFITSIO ................... = ${CFITSIO_FOUND}"           )
+message (STATUS " .. FFTW3 ..................... = ${FFTW3_FOUND}"             )
+message (STATUS " .. LLVM ...................... = ${LLVM_FOUND}"              )
+message (STATUS " .. PIL ....................... = ${PIL_FOUND}"               )
+message (STATUS " .. POPT ...................... = ${POPT_FOUND}"              )
+message (STATUS " .. Rails ..................... = ${RAILS_FOUND}"             )
+message (STATUS " .. Rake ...................... = ${RAKE_FOUND}"              )
+message (STATUS " .. Ruby ...................... = ${RUBY_FOUND}"              )
+message (STATUS " .. WCSLIB .................... = ${WCSLIB_FOUND}"            )
+message (STATUS " .. Webgen .................... = ${WEBGEN_FOUND}"            )
+message (STATUS " .. Yasm ...................... = ${YASM_FOUND}"              )
+message (STATUS " .. YAZ ....................... = ${YAZ_FOUND}"               )
+message (STATUS " .. YAZ++ ..................... = ${YAZPP_FOUND}"             )
+
+message (STATUS "------------------------------------------------------------" )
