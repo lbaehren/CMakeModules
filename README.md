@@ -22,6 +22,12 @@ which will set up a simple project including the modules:
     cd build
     cmake ..
 
+By default all find modules will be included and tested; if however you want to
+restrict testing to an individual module you can use the command line option
+`MODULE_SELECTION` to select a specific module, e.g.
+
+    cmake -DMODULE_SELECTION=FindRuby.cmake ..
+
 ## Links
 
 * CMake (www.cmake.org)
