@@ -101,14 +101,14 @@ if (NOT RUBY_FOUND)
       OUTPUT_VARIABLE _RUBY_OUTPUT
       ERROR_QUIET)
     IF(_RUBY_SUCCESS OR NOT _RUBY_OUTPUT)
-      EXECUTE_PROCESS(COMMAND ${RUBY_EXECUTABLE} -r rbconfig -e "print Config::CONFIG['${RBVAR}']"  
+      EXECUTE_PROCESS(COMMAND ${RUBY_EXECUTABLE} -r rbconfig -e "print Config::CONFIG['${RBVAR}']"
         RESULT_VARIABLE _RUBY_SUCCESS
         OUTPUT_VARIABLE _RUBY_OUTPUT
         ERROR_QUIET)
     ENDIF(_RUBY_SUCCESS OR NOT _RUBY_OUTPUT)
     SET(${OUTVAR} "${_RUBY_OUTPUT}" PARENT_SCOPE)
     endfunction (_RUBY_CONFIG_VAR)
-    
+
     # query the ruby version
     _RUBY_CONFIG_VAR ("MAJOR" RUBY_VERSION_MAJOR)
     _RUBY_CONFIG_VAR ("MINOR" RUBY_VERSION_MINOR)
@@ -121,7 +121,7 @@ if (NOT RUBY_FOUND)
     _RUBY_CONFIG_VAR ("rubyhdrdir" RUBY_HDR_DIR)
     _RUBY_CONFIG_VAR ("libdir"     RUBY_POSSIBLE_LIB_DIR)
     _RUBY_CONFIG_VAR ("rubylibdir" RUBY_RUBY_LIB_DIR)
-    
+
   endif ()
 
   ##_____________________________________________________________________________
@@ -135,7 +135,7 @@ if (NOT RUBY_FOUND)
 
   ##_____________________________________________________________________________
   ## Check for the library
-  
+
   find_library (RUBY_LIBRARIES
     NAMES ${_RUBY_POSSIBLE_LIBRARY_NAMES}
     HINTS ${RUBY_ROOT_DIR} ${_RUBY_BASE_DIR} ${CMAKE_INSTALL_PREFIX}
