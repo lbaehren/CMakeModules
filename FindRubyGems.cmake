@@ -18,124 +18,134 @@
 # |   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.                 |
 # +-----------------------------------------------------------------------------+
 
-# - Check for the presence of RUBYGEMS
+# - Check for the presence of RubyGems
 #
-# The following variables are set when RUBYGEMS is found:
-#  RUBYGEMS_FOUND          = Set to true, Ruby Gem has been found.
-#  RUBYGEM_<PACKAGE>_FOUND = Set true, if the individual <PACKAGE> has been
-#                            found.
+# The following variables are set when GEM is found:
+#  RUBYGEMS_FOUND      = Set to true, if all components of GEM have been found.
+#  GEM_EXECUTABLE      = Full path to the 'gem' executable
+#  RUBYGEMS_PATH_HOME  = Path(s) used to search for gems
 
 if (NOT RUBYGEMS_FOUND)
-
+    
   if (NOT RUBYGEMS_ROOT_DIR)
     set (RUBYGEMS_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT RUBYGEMS_ROOT_DIR)
-
-  ##_____________________________________________________________________________
-  ## Required: find Ruby Gem first
-
-  if (NOT GEM_EXECUTABLE)
-    find_package (Gem)
-  endif (NOT GEM_EXECUTABLE)
-
-  set (RUBYGEMS_FOUND ${GEM_FOUND})
-
-  ##_____________________________________________________________________________
-  ## Set up the list of Gems to search for
-
-  set (RUBYGEMS_GEMS
-      apache_image_resizer
-      apache_secure_download
-      ar_mailer
-      blackwinter-gnuplot
-      capistrano
-      exifr
-      fastercsv
-      gruff
-      highline
-      hpricot
-      jekyll
-      jekyll-localization
-      jekyll-pagination
-      jekyll-tagging
-      json
-      libxml-ext
-      libxml-ruby
-      lockfile
-      mail
-      mime-types
-      mongrel
-      mongrel_cluster
-      mysql
-      oauth
-      pdf-reader
-      piston
-      rake
-      redcarpet
-      ruby-backports
-      ruby-debug
-      ruby-filemagic
-      ruby-hmac
-      ruby-nuggets
-      unicode
-      wadl
-      yard
-    )
-
+  
+  if (NOT RUBY_FOUND)
+    ## Find the package
+    find_package (Ruby)
+    ## Decomposition of Ruby version number
+    if (RUBY_VERSION)
+      ## Convert string to list of numbers
+      string (REGEX REPLACE "\\." ";" RUBY_VERSION_LIST ${RUBY_VERSION})
+      ## Retrieve individual elements in the list
+      list(GET RUBY_VERSION_LIST 0 RUBY_VERSION_MAJOR)
+      list(GET RUBY_VERSION_LIST 1 RUBY_VERSION_MINOR)
+      list(GET RUBY_VERSION_LIST 2 RUBY_VERSION_PATCH)
+      ## Ruby release series
+      set (RUBY_VERSION_SERIES "${RUBY_VERSION_MAJOR}.${RUBY_VERSION_MINOR}")
+    else (RUBY_VERSION)
+      message (STATUS "Found Ruby - failed to extract version number!")
+    endif (RUBY_VERSION)
+    
+  endif (NOT RUBY_FOUND)
+  
   ##_____________________________________________________________________________
   ## Check for the executable
+  
+  find_program (GEM_EXECUTABLE gem
+    HINTS ${RUBYGEMS_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
+    PATH_SUFFIXES bin
+    )
+  
+  ##_____________________________________________________________________________
+  ## Extract program version
 
   if (GEM_EXECUTABLE)
 
-    ## Get the list of install Ruby gems
-    execute_process (
-      COMMAND ${GEM_EXECUTABLE} list --local
+    ## Run gem to display the gem format version
+    execute_process(
+      COMMAND ${GEM_EXECUTABLE} --version
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-      RESULT_VARIABLE GEM_LIST_RESULT
-      OUTPUT_VARIABLE GEM_LIST_OUTPUT
-      ERROR_VARIABLE GEM_LIST_ERROR
+      RESULT_VARIABLE RUBYGEMS_RESULT_VARIABLE
+      OUTPUT_VARIABLE RUBYGEMS_OUTPUT_VARIABLE
+      ERROR_VARIABLE RUBYGEMS_ERROR_VARIABLE
+      OUTPUT_STRIP_TRAILING_WHITESPACE
       )
 
-    ## If not empty, process the output of the previous query
-    if (GEM_LIST_OUTPUT)
+    ## Process output in order to extract version number. Gem returns status 0
+    ## if run successfully.
+    if (NOT RUBYGEMS_RESULT_VARIABLE)
 
-      ## Go through the list of expected Gems and check if they are installed
-      foreach (VAR_GEM ${RUBYGEMS_GEMS})
+      string(REGEX REPLACE "gem " "" RUBYGEMS_VERSION ${RUBYGEMS_OUTPUT_VARIABLE})
 
-	string (TOUPPER ${VAR_GEM} VAR_GEM_UPPER)
-
-	## Is the gem in the list?
-	string (REGEX MATCH
-	  ${VAR_GEM} ${VAR_GEM}_FOUND ${GEM_LIST_OUTPUT}
-	  )
-
-    if (${VAR_GEM}_FOUND)
-	  set (RUBYGEM_${VAR_GEM_UPPER}_FOUND TRUE)
-	else (${VAR_GEM}_FOUND)
-	  set (RUBYGEM_${VAR_GEM_UPPER}_FOUND FALSE)
-	endif (${VAR_GEM}_FOUND)
-
-	if (NOT RUBYGEMS_FIND_QUIETLY)
-	  message (STATUS "Ruby gem ${VAR_GEM} found? - ${RUBYGEM_${VAR_GEM_UPPER}_FOUND}")
-	endif (NOT RUBYGEMS_FIND_QUIETLY)
-
-      endforeach (VAR_GEM)
-
-    endif (GEM_LIST_OUTPUT)
+      if (RUBYGEMS_VERSION)
+	## Convert string to list of numbers
+	string (REGEX REPLACE "\\." ";" RUBYGEMS_VERSION_LIST ${RUBYGEMS_VERSION})
+	## Retrieve individual elements in the list
+	list(GET RUBYGEMS_VERSION_LIST 0 RUBYGEMS_VERSION_MAJOR)
+	list(GET RUBYGEMS_VERSION_LIST 1 RUBYGEMS_VERSION_MINOR)
+	list(GET RUBYGEMS_VERSION_LIST 2 RUBYGEMS_VERSION_PATCH)
+      endif (RUBYGEMS_VERSION)
+      
+    endif (NOT RUBYGEMS_RESULT_VARIABLE)
 
   endif (GEM_EXECUTABLE)
 
   ##_____________________________________________________________________________
-  ## Actions taken when all components have been found
+  ## Check if installation and module paths are set
 
+  if (GEM_EXECUTABLE)
+
+    ## Run gem to display path used to search for gems
+    execute_process(
+      COMMAND ${GEM_EXECUTABLE} environment gempath
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      RESULT_VARIABLE RUBYGEMS_RESULT_VARIABLE
+      OUTPUT_VARIABLE RUBYGEMS_OUTPUT_VARIABLE
+      ERROR_VARIABLE RUBYGEMS_ERROR_VARIABLE
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
+
+    if (NOT RUBYGEMS_RESULT_VARIABLE)
+      ## Convert string to list of paths
+      string (REGEX REPLACE "\\:" ";" RUBYGEMS_PATH_HOME ${RUBYGEMS_OUTPUT_VARIABLE})
+    endif ()
+    
+  else (GEM_EXECUTABLE)
+    
+    ## Try to determine gempath otherwise
+    find_path (RUBYGEMS_PATH_HOME
+      NAMES
+      ${CMAKE_INSTALL_PREFIX}/lib/ruby/gems/${RUBY_VERSION_SERIES}/gems
+      /usr/lib/ruby/gems/${RUBY_VERSION_SERIES}/gems
+      $ENV{RUBYGEMS_HOME}
+      )
+    
+  endif (GEM_EXECUTABLE)
+  
+  ## Export path to environment: set( ENV{PATH} /home/martink )
+
+  ##_____________________________________________________________________________
+  ## Actions taken when all components have been found
+  
+  if (GEM_EXECUTABLE)
+    set (RUBYGEMS_FOUND TRUE)
+  else (GEM_EXECUTABLE)
+    set (RUBYGEMS_FOUND FALSE)
+  endif (GEM_EXECUTABLE)
+  
   if (RUBYGEMS_FOUND)
     if (NOT RUBYGEMS_FIND_QUIETLY)
-      message (STATUS "Found components for RUBYGEMS")
-      message (STATUS "RUBYGEMS_ROOT_DIR  = ${RUBYGEMS_ROOT_DIR}")
+      message (STATUS "Found components for GEM")
+      message (STATUS "RUBYGEMS_ROOT_DIR   = ${RUBYGEMS_ROOT_DIR}"   )
+      message (STATUS "GEM_EXECUTABLE      = ${GEM_EXECUTABLE}"      )
+      message (STATUS "RUBY_VERSION_SERIES = ${RUBY_VERSION_SERIES}" )
+      message (STATUS "RUBYGEMS_PATH_HOME  = ${RUBYGEMS_PATH_HOME}"  )
     endif (NOT RUBYGEMS_FIND_QUIETLY)
   else (RUBYGEMS_FOUND)
     if (RUBYGEMS_FIND_REQUIRED)
-      message (FATAL_ERROR "Could not find RUBYGEMS!")
+      message (FATAL_ERROR "Could not find Gem!")
     endif (RUBYGEMS_FIND_REQUIRED)
   endif (RUBYGEMS_FOUND)
   
@@ -144,6 +154,8 @@ if (NOT RUBYGEMS_FOUND)
   
   mark_as_advanced (
     RUBYGEMS_ROOT_DIR
+    RUBYGEMS_INCLUDES
+    RUBYGEMS_LIBRARIES
     )
   
 endif (NOT RUBYGEMS_FOUND)
