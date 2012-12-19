@@ -26,12 +26,15 @@
 #  RUBYGEMS_PATH_HOME  = Path(s) used to search for gems
 
 if (NOT RUBYGEMS_FOUND)
-    
+
   if (NOT RUBYGEMS_ROOT_DIR)
     set (RUBYGEMS_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT RUBYGEMS_ROOT_DIR)
-  
+
   if (NOT RUBY_FOUND)
+    if (RUBYGEMS_FIND_QUIETLY)
+      set (RUBY_FIND_QUIETLY TRUE)
+    endif ()
     ## Find the package
     find_package (Ruby)
     ## Decomposition of Ruby version number
@@ -47,17 +50,17 @@ if (NOT RUBYGEMS_FOUND)
     else (RUBY_VERSION)
       message (STATUS "Found Ruby - failed to extract version number!")
     endif (RUBY_VERSION)
-    
+
   endif (NOT RUBY_FOUND)
-  
+
   ##_____________________________________________________________________________
   ## Check for the executable
-  
+
   find_program (GEM_EXECUTABLE gem
     HINTS ${RUBYGEMS_ROOT_DIR}  ${CMAKE_INSTALL_PREFIX}
     PATH_SUFFIXES bin
     )
-  
+
   ##_____________________________________________________________________________
   ## Extract program version
 
@@ -87,7 +90,7 @@ if (NOT RUBYGEMS_FOUND)
 	list(GET RUBYGEMS_VERSION_LIST 1 RUBYGEMS_VERSION_MINOR)
 	list(GET RUBYGEMS_VERSION_LIST 2 RUBYGEMS_VERSION_PATCH)
       endif (RUBYGEMS_VERSION)
-      
+
     endif (NOT RUBYGEMS_RESULT_VARIABLE)
 
   endif (GEM_EXECUTABLE)
@@ -111,9 +114,9 @@ if (NOT RUBYGEMS_FOUND)
       ## Convert string to list of paths
       string (REGEX REPLACE "\\:" ";" RUBYGEMS_PATH_HOME ${RUBYGEMS_OUTPUT_VARIABLE})
     endif ()
-    
+
   else (GEM_EXECUTABLE)
-    
+
     ## Try to determine gempath otherwise
     find_path (RUBYGEMS_PATH_HOME
       NAMES
@@ -121,20 +124,20 @@ if (NOT RUBYGEMS_FOUND)
       /usr/lib/ruby/gems/${RUBY_VERSION_SERIES}/gems
       $ENV{RUBYGEMS_HOME}
       )
-    
+
   endif (GEM_EXECUTABLE)
-  
+
   ## Export path to environment: set( ENV{PATH} /home/martink )
 
   ##_____________________________________________________________________________
   ## Actions taken when all components have been found
-  
+
   if (GEM_EXECUTABLE)
     set (RUBYGEMS_FOUND TRUE)
   else (GEM_EXECUTABLE)
     set (RUBYGEMS_FOUND FALSE)
   endif (GEM_EXECUTABLE)
-  
+
   if (RUBYGEMS_FOUND)
     if (NOT RUBYGEMS_FIND_QUIETLY)
       message (STATUS "Found components for GEM")
