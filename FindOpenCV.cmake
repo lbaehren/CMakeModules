@@ -63,15 +63,23 @@ if (NOT OPENCV_FOUND)
   ## Check for the library
 
   foreach (OPENCV_LIBRARY
-      opencv_core
       opencv_calib3d
+      opencv_contrib
+      opencv_core
+      opencv_features2d
+      opencv_flann
       opencv_gpu
       opencv_highgui
       opencv_imgproc
+      opencv_legacy
       opencv_ml
+      opencv_nonfree
+      opencv_objdetect
       opencv_photo
+      opencv_stitching
       opencv_ts
       opencv_video
+      opencv_videostab
       )
     ## Convert library name to upper-case
     string (TOUPPER ${OPENCV_LIBRARY} varLibrary)
