@@ -66,6 +66,7 @@ if (NOT OPENCV_FOUND)
       opencv_core
       opencv_calib3d
       opencv_gpu
+      opencv_highgui
       opencv_imgproc
       opencv_ml
       opencv_photo
