@@ -77,6 +77,29 @@ if (NOT GSL_FOUND)
     )
 
   ##_____________________________________________________________________________
+  ## Deteemine version number
+
+  if (GSL_CONFIG_EXECUTABLE)
+
+    execute_process (
+      COMMAND ${GSL_CONFIG_EXECUTABLE} --version
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      RESULT_VARIABLE GSL_CONFIG_RESULT
+      OUTPUT_VARIABLE GSL_VERSION
+      ERROR_VARIABLE GSL_CONFIG_ERROR
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      )
+
+    string(REGEX REPLACE ".*([0-9]+).[0-9]+.[0-9]+.*" "\\1"
+      GSL_VERSION_MAJOR ${GSL_VERSION})
+    string(REGEX REPLACE ".*[0-9]+.([0-9]+).[0-9]+.*" "\\1"
+      GSL_VERSION_MINOR ${GSL_VERSION})
+    string(REGEX REPLACE ".*[0-9]+.[0-9]+.([0-9]+).*" "\\1"
+      GSL_VERSION_PATCH ${GSL_VERSION})
+
+  endif (GSL_CONFIG_EXECUTABLE)
+
+  ##_____________________________________________________________________________
   ## Actions taken when all components have been found
 
   find_package_handle_standard_args (GSL DEFAULT_MSG GSL_LIBRARIES GSL_INCLUDES)
@@ -87,6 +110,7 @@ if (NOT GSL_FOUND)
       message (STATUS "GSL_ROOT_DIR  = ${GSL_ROOT_DIR}")
       message (STATUS "GSL_INCLUDES  = ${GSL_INCLUDES}")
       message (STATUS "GSL_LIBRARIES = ${GSL_LIBRARIES}")
+      message (STATUS "GSL_VERSION   = ${GSL_VERSION}")
     endif (NOT GSL_FIND_QUIETLY)
   else (GSL_FOUND)
     if (GSL_FIND_REQUIRED)
