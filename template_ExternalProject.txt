@@ -30,7 +30,7 @@
 ##
 ## ==============================================================================
 
-set (<PACKAGE>_VERSION        "" )
+set (<PACKAGE>_SOURCE_VERSION "" )
 set (<PACKAGE>_SOURCE_ARCHIVE "" )
 set (<PACKAGE>_URL            "" )
 set (<PACKAGE>_SVN            "" )
