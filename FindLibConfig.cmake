@@ -65,11 +65,11 @@ if (NOT LIBCONFIG_FOUND)
 
   ##_____________________________________________________________________________
   ## Determine version of the library
-  
+
   if (LIBCONFIG_PC)
-    
+
     file (STRINGS ${LIBCONFIG_PC} LIBCONFIG_VERSION REGEX "Version")
-    
+
     if (LIBCONFIG_VERSION)
 
       ## Dissect version number into individual parts
@@ -78,12 +78,12 @@ if (NOT LIBCONFIG_FOUND)
       string(REGEX REPLACE ".*[0-9]+.([0-9]+).[0-9]+.*" "\\1"
 	LIBCONFIG_VERSION_MINOR ${LIBCONFIG_VERSION})
       string(REGEX REPLACE ".*[0-9]+.[0-9]+.([0-9]+).*" "\\1"
-	LIBCONFIG_VERSION_PATCH ${LIBCONFIG_VERSION})
+	LIBCONFIG_VERSION_RELEASE ${LIBCONFIG_VERSION})
 
       ## Assemble version number
       set (LIBCONFIG_VERSION "${LIBCONFIG_VERSION_MAJOR}")
       set (LIBCONFIG_VERSION "${LIBCONFIG_VERSION}.${LIBCONFIG_VERSION_MINOR}")
-      set (LIBCONFIG_VERSION "${LIBCONFIG_VERSION}.${LIBCONFIG_VERSION_PATCH}")
+      set (LIBCONFIG_VERSION "${LIBCONFIG_VERSION}.${LIBCONFIG_VERSION_RELEASE}")
 
     endif (LIBCONFIG_VERSION)
 
