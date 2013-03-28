@@ -1,5 +1,5 @@
 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Copyright (c) 2013-2013, Lars Baehren <lbaehren@gmail.com>
 # All rights reserved.
 #
@@ -22,7 +22,7 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 # - Check for the presence of <PACKAGE>
 #
@@ -38,7 +38,7 @@ if (NOT <PACKAGE>_FOUND)
     set (<PACKAGE>_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT <PACKAGE>_ROOT_DIR)
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Check for the header files
 
   find_path (<PACKAGE>_INCLUDES
@@ -47,7 +47,7 @@ if (NOT <PACKAGE>_FOUND)
     PATH_SUFFIXES include
     )
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Check for the library
 
   find_library (<PACKAGE>_LIBRARIES <package name>
@@ -55,7 +55,7 @@ if (NOT <PACKAGE>_FOUND)
     PATH_SUFFIXES lib
     )
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Check for the executable
 
   find_program (<PACKAGE>_EXECUTABLE <package name>
@@ -63,7 +63,7 @@ if (NOT <PACKAGE>_FOUND)
     PATH_SUFFIXES bin
     )
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Actions taken when all components have been found
 
   find_package_handle_standard_args (<PACKAGE> DEFAULT_MSG <PACKAGE>_LIBRARIES <PACKAGE>_INCLUDES)
@@ -81,7 +81,7 @@ if (NOT <PACKAGE>_FOUND)
     endif (<PACKAGE>_FIND_REQUIRED)
   endif (<PACKAGE>_FOUND)
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Mark advanced variables
 
   mark_as_advanced (
