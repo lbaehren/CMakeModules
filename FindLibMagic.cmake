@@ -1,5 +1,5 @@
 
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # Copyright (c) 2013-2013, Lars Baehren <lbaehren@gmail.com>
 # All rights reserved.
 #
@@ -22,12 +22,13 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 # - Check for the presence of LIBMAGIC
 #
 # The following variables are set when LIBMAGIC is found:
-#  LIBMAGIC_FOUND      = Set to true, if all components of LIBMAGIC have been found.
+#  LIBMAGIC_FOUND      = Set to true, if all components of LIBMAGIC have been
+#                        found.
 #  LIBMAGIC_INCLUDES   = Include path for the header files of LIBMAGIC
 #  LIBMAGIC_LIBRARIES  = Link these to use LIBMAGIC
 #  LIBMAGIC_LFLAGS     = Linker flags (optional)
@@ -38,7 +39,7 @@ if (NOT LIBMAGIC_FOUND)
     set (LIBMAGIC_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT LIBMAGIC_ROOT_DIR)
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Check for the header files
 
   find_path (LIBMAGIC_FILE_H
@@ -59,7 +60,9 @@ if (NOT LIBMAGIC_FOUND)
     list (APPEND LIBMAGIC_INCLUDES ${LIBMAGIC_MAGIC_H})
   endif (LIBMAGIC_MAGIC_H)
 
-  ##_____________________________________________________________________________
+  list (REMOVE_DUPLICATES LIBMAGIC_INCLUDES)
+
+  ##____________________________________________________________________________
   ## Check for the library
 
   find_library (LIBMAGIC_LIBRARIES magic
@@ -67,7 +70,7 @@ if (NOT LIBMAGIC_FOUND)
     PATH_SUFFIXES lib
     )
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Actions taken when all components have been found
 
   find_package_handle_standard_args (LIBMAGIC DEFAULT_MSG LIBMAGIC_LIBRARIES LIBMAGIC_INCLUDES)
@@ -85,7 +88,7 @@ if (NOT LIBMAGIC_FOUND)
     endif (LIBMAGIC_FIND_REQUIRED)
   endif (LIBMAGIC_FOUND)
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Mark advanced variables
 
   mark_as_advanced (
