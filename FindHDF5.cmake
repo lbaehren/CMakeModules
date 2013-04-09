@@ -89,6 +89,33 @@ if (NOT HDF5_FOUND)
     )
 
   ##____________________________________________________________________________
+  ## Determine library version
+
+  if (HDF5_INCLUDES AND HDF5_LIBRARIES)
+
+    find_file (HAVE_TESTHDF5_CC TestHDF5LibraryVersion.cc
+        HINTS ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+    try_run (run_TestHDF5 compile_TestHDF5
+             ${PROJECT_BINARY_DIR}/TestHDF5
+             ${HAVE_TESTHDF5_CC}
+             CMAKE_FLAGS -DINCLUDE_DIRECTORIES=${HDF5_INCLUDES} -DLINK_LIBRARIES=${HDF5_LIBRARIES}
+             RUN_OUTPUT_VARIABLE HDF5_VERSION
+             )
+
+    if (HDF5_VERSION)
+        ## extract partial version numbers
+        list (GET HDF5_VERSION 0 HDF5_VERSION_MAJOR)
+        list (GET HDF5_VERSION 1 HDF5_VERSION_MINOR)
+        list (GET HDF5_VERSION 2 HDF5_VERSION_PATH)
+        ## assemble full version number
+        set (HDF5_VERSION "${HDF5_VERSION_MAJOR}.${HDF5_VERSION_MINOR}.${HDF5_VERSION_PATH}")
+    endif (HDF5_VERSION)
+
+  endif ()
+
+  ##____________________________________________________________________________
   ## Actions taken when all components have been found
 
   find_package_handle_standard_args (HDF5 DEFAULT_MSG HDF5_LIBRARIES HDF5_INCLUDES)
