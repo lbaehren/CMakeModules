@@ -94,7 +94,7 @@ if (NOT HDF5_FOUND)
   if (HDF5_INCLUDES AND HDF5_LIBRARIES)
 
     find_file (HAVE_TESTHDF5_CC TestHDF5LibraryVersion.cc
-        HINTS ${CMAKE_CURRENT_SOURCE_DIR}
+        HINTS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH}
     )
 
     try_run (run_TestHDF5 compile_TestHDF5
