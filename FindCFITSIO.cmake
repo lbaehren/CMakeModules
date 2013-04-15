@@ -1,6 +1,6 @@
 
-#--------------------------------------------------------------------------------
-# Copyright (c) 2012-2013, Lars Baehren <lbaehren@gmail.com>
+#-------------------------------------------------------------------------------
+# Copyright (c) 2013-2013, Lars Baehren <lbaehren@gmail.com>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -22,7 +22,7 @@
 # CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 # - Check for the presence of CFITSIO
 #
@@ -38,15 +38,16 @@ if (NOT CFITSIO_FOUND)
     set (CFITSIO_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT CFITSIO_ROOT_DIR)
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Check for the header files
 
-  find_path (CFITSIO_INCLUDES fitsio.h fitsio2.h
+  find_path (CFITSIO_INCLUDES
+    NAMES fitsio.h fitsio2.h
     HINTS ${CFITSIO_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
-    PATH_SUFFIXES include include/fitsio include/cfitsio
+    PATH_SUFFIXES include
     )
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Check for the library
 
   find_library (CFITSIO_LIBRARIES cfitsio
@@ -54,26 +55,42 @@ if (NOT CFITSIO_FOUND)
     PATH_SUFFIXES lib
     )
 
-  ##_____________________________________________________________________________
-  ## Actions taken when all components have been found
+  ##____________________________________________________________________________
+  ## Determine library version
 
   if (CFITSIO_INCLUDES AND CFITSIO_LIBRARIES)
-    set (CFITSIO_FOUND TRUE)
-  else (CFITSIO_INCLUDES AND CFITSIO_LIBRARIES)
-    set (CFITSIO_FOUND FALSE)
-    if (NOT CFITSIO_FIND_QUIETLY)
-      if (NOT CFITSIO_INCLUDES)
-	message (STATUS "Unable to find CFITSIO header files!")
-      endif (NOT CFITSIO_INCLUDES)
-      if (NOT CFITSIO_LIBRARIES)
-	message (STATUS "Unable to find CFITSIO library files!")
-      endif (NOT CFITSIO_LIBRARIES)
-    endif (NOT CFITSIO_FIND_QUIETLY)
-  endif (CFITSIO_INCLUDES AND CFITSIO_LIBRARIES)
+
+    find_file (HAVE_TESTCFITSIO_CC TestCFITSIOLibraryVersion.cc
+        HINTS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH}
+    )
+
+    try_run (run_TestCFITSIO compile_TestCFITSIO
+             ${PROJECT_BINARY_DIR}/TestCFITSIO
+             ${HAVE_TESTCFITSIO_CC}
+             CMAKE_FLAGS -DINCLUDE_DIRECTORIES=${CFITSIO_INCLUDES} -DLINK_LIBRARIES=${CFITSIO_LIBRARIES}
+             RUN_OUTPUT_VARIABLE CFITSIO_VERSION
+             )
+
+    if (CFITSIO_VERSION)
+        ## extract partial version numbers
+        list (GET CFITSIO_VERSION 0 CFITSIO_VERSION_MAJOR)
+        list (GET CFITSIO_VERSION 1 CFITSIO_VERSION_MINOR)
+        ## assemble full version number
+        set (CFITSIO_VERSION "${CFITSIO_VERSION_MAJOR}.${CFITSIO_VERSION_MINOR}")
+    endif (CFITSIO_VERSION)
+
+  endif ()
+
+  ##____________________________________________________________________________
+  ## Actions taken when all components have been found
+
+  find_package_handle_standard_args (CFITSIO DEFAULT_MSG CFITSIO_LIBRARIES CFITSIO_INCLUDES)
 
   if (CFITSIO_FOUND)
     if (NOT CFITSIO_FIND_QUIETLY)
       message (STATUS "Found components for CFITSIO")
+      message (STATUS "CFITSIO_ROOT_DIR  = ${CFITSIO_ROOT_DIR}")
+      message (STATUS "CFITSIO_VERSION   = ${CFITSIO_VERSION}")
       message (STATUS "CFITSIO_INCLUDES  = ${CFITSIO_INCLUDES}")
       message (STATUS "CFITSIO_LIBRARIES = ${CFITSIO_LIBRARIES}")
     endif (NOT CFITSIO_FIND_QUIETLY)
@@ -83,10 +100,11 @@ if (NOT CFITSIO_FOUND)
     endif (CFITSIO_FIND_REQUIRED)
   endif (CFITSIO_FOUND)
 
-  ##_____________________________________________________________________________
+  ##____________________________________________________________________________
   ## Mark advanced variables
 
   mark_as_advanced (
+    CFITSIO_ROOT_DIR
     CFITSIO_INCLUDES
     CFITSIO_LIBRARIES
     )
