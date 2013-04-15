@@ -44,7 +44,7 @@ if (NOT CFITSIO_FOUND)
   find_path (CFITSIO_INCLUDES
     NAMES fitsio.h fitsio2.h
     HINTS ${CFITSIO_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
-    PATH_SUFFIXES include
+    PATH_SUFFIXES include cfitsio include/cfitsio
     )
 
   ##____________________________________________________________________________
