@@ -74,11 +74,11 @@ if (NOT LIBCONFIG_FOUND)
 
       ## Dissect version number into individual parts
       string(REGEX REPLACE ".*([0-9]+).[0-9]+.[0-9]+.*" "\\1"
-	LIBCONFIG_VERSION_MAJOR ${LIBCONFIG_VERSION})
+             LIBCONFIG_VERSION_MAJOR ${LIBCONFIG_VERSION})
       string(REGEX REPLACE ".*[0-9]+.([0-9]+).[0-9]+.*" "\\1"
-	LIBCONFIG_VERSION_MINOR ${LIBCONFIG_VERSION})
+             LIBCONFIG_VERSION_MINOR ${LIBCONFIG_VERSION})
       string(REGEX REPLACE ".*[0-9]+.[0-9]+.([0-9]+).*" "\\1"
-	LIBCONFIG_VERSION_RELEASE ${LIBCONFIG_VERSION})
+             LIBCONFIG_VERSION_RELEASE ${LIBCONFIG_VERSION})
 
       ## Assemble version number
       set (LIBCONFIG_VERSION "${LIBCONFIG_VERSION_MAJOR}")
