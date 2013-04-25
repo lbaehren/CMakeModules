@@ -28,7 +28,7 @@
 #
 # NetCDF is a set of software libraries and self-describing, machine-independent
 # data formats that support the creation, access, and sharing of array-oriented
-# scientific data. 
+# scientific data.
 #
 # The following variables are set when NETCDF is found:
 #  NETCDF_FOUND      = Set to true, if all components of NETCDF have been found.
@@ -69,20 +69,19 @@ if (NOT NETCDF_FOUND)
 
   ##_____________________________________________________________________________
   ## Determine version of the library
-  
+
   if (NETCDF_PC)
-    
+
     file (STRINGS ${NETCDF_PC} NETCDF_VERSION REGEX "Version:")
-    
+
     if (NETCDF_VERSION)
 
-      ## Dissect version number into individual parts
-      string(REGEX REPLACE ".*([0-9]+).[0-9]+.[0-9]+.[0-9]+.*" "\\1"
-	NETCDF_VERSION_MAJOR ${NETCDF_VERSION})
-      string(REGEX REPLACE ".*[0-9]+.([0-9]+).[0-9]+.[0-9]+.*" "\\1"
-	NETCDF_VERSION_MINOR ${NETCDF_VERSION})
-      string(REGEX REPLACE ".*[0-9]+.[0-9]+.([0-9]+).*" "\\1"
-	NETCDF_VERSION_PATCH ${NETCDF_VERSION})
+      string (REGEX REPLACE "Version: " "" NETCDF_VERSION ${NETCDF_VERSION})
+      string (REGEX REPLACE "\\." ";" NETCDF_VERSION ${NETCDF_VERSION})
+
+      list (GET NETCDF_VERSION 0 NETCDF_VERSION_MAJOR)
+      list (GET NETCDF_VERSION 1 NETCDF_VERSION_MINOR)
+      list (GET NETCDF_VERSION 2 NETCDF_VERSION_PATCH)
 
       ## Assemble version number
       set (NETCDF_VERSION "${NETCDF_VERSION_MAJOR}")
@@ -119,6 +118,7 @@ if (NOT NETCDF_FOUND)
     NETCDF_ROOT_DIR
     NETCDF_INCLUDES
     NETCDF_LIBRARIES
+    NETCDF_VERSION
     )
 
 endif (NOT NETCDF_FOUND)
