@@ -1,4 +1,3 @@
-
 #-------------------------------------------------------------------------------
 # Copyright (c) 2013-2013, Lars Baehren <lbaehren@gmail.com>
 # All rights reserved.
@@ -87,8 +86,6 @@ if (NOT ROOT_FOUND)
       )
   endif (ROOT_CONFIG_EXECUTABLE)
 
-  message (STATUS "ROOT_INCLUDES = ${ROOT_INCLUDES}")
-
   ##____________________________________________________________________________
   ## Check for the library
 
@@ -156,6 +153,7 @@ if (NOT ROOT_FOUND)
     ROOT_ROOT_DIR
     ROOT_INCLUDES
     ROOT_LIBRARIES
+    ROOT_FEATURES
     )
 
 endif (NOT ROOT_FOUND)
