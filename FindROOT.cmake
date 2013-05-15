@@ -37,8 +37,9 @@ if (NOT ROOT_FOUND)
     set (ROOT_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
   endif (NOT ROOT_ROOT_DIR)
 
-  ##____________________________________________________________________________
-  ## Check for configuration tool
+  ##__________________________________________________________________________
+  ## Check for configuration tool; if it is found, wean use it to gather most
+  ##  of the information.
 
   find_program (ROOT_CONFIG_EXECUTABLE root-config
     HINTS ${ROOT_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
@@ -67,7 +68,7 @@ if (NOT ROOT_FOUND)
                      )
   endif (ROOT_CONFIG_EXECUTABLE)
 
-  ##____________________________________________________________________________
+  ##__________________________________________________________________________
   ## Check for the header files
 
   if (ROOT_CONFIG_EXECUTABLE)
@@ -86,7 +87,7 @@ if (NOT ROOT_FOUND)
       )
   endif (ROOT_CONFIG_EXECUTABLE)
 
-  ##____________________________________________________________________________
+  ##__________________________________________________________________________
   ## Check for the library
 
   if (ROOT_CONFIG_EXECUTABLE)
@@ -100,7 +101,23 @@ if (NOT ROOT_FOUND)
     ## ... and remove the first entry
     list (REMOVE_AT _rootLibs 0)
   else (ROOT_CONFIG_EXECUTABLE)
-    set (_rootLibs Gui Core Cint RIO Net Hist Graf Graf3d Gpad Tree Rint Postscript Matrix Physics MathCore Thread)
+    set (_rootLibs
+         Gui
+         Core
+         Cint
+         RIO
+         Net
+         Hist
+         Graf
+         Graf3d
+         Gpad
+         Tree
+         Rint
+         Postscript
+         Matrix
+         Physics
+         MathCore
+         Thread)
   endif (ROOT_CONFIG_EXECUTABLE)
 
   foreach (_lib ${_rootLibs})
@@ -118,7 +135,7 @@ if (NOT ROOT_FOUND)
     endif (ROOT_${_libUpper}_LIBRARY)
   endforeach (_lib)
 
-  ##____________________________________________________________________________
+  ##__________________________________________________________________________
   ## Check for the executables
 
   find_program (ROOT_EXECUTABLE root
@@ -126,7 +143,7 @@ if (NOT ROOT_FOUND)
     PATH_SUFFIXES bin
     )
 
-  ##____________________________________________________________________________
+  ##__________________________________________________________________________
   ## Actions taken when all components have been found
 
   find_package_handle_standard_args (ROOT DEFAULT_MSG ROOT_LIBRARIES ROOT_INCLUDES)
@@ -146,7 +163,7 @@ if (NOT ROOT_FOUND)
     endif (ROOT_FIND_REQUIRED)
   endif (ROOT_FOUND)
 
-  ##____________________________________________________________________________
+  ##__________________________________________________________________________
   ## Mark advanced variables
 
   mark_as_advanced (
