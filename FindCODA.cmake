@@ -56,7 +56,25 @@ if (NOT CODA_FOUND)
     )
 
   ##____________________________________________________________________________
-  ## Check for the executable
+  ## Determine library version
+
+  if (CODA_INCLUDES AND CODA_LIBRARIES)
+
+    find_file (HAVE_TESTCODA_CC TestCODALibraryVersion.cc
+        HINTS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH}
+    )
+
+    try_run (run_TestCODA compile_TestCODA
+             ${PROJECT_BINARY_DIR}/TestCODA
+             ${HAVE_TESTCODA_CC}
+             CMAKE_FLAGS -DINCLUDE_DIRECTORIES=${CODA_INCLUDES} -DLINK_LIBRARIES=${CODA_LIBRARIES}
+             RUN_OUTPUT_VARIABLE CODA_VERSION
+             )
+
+  endif (CODA_INCLUDES AND CODA_LIBRARIES)
+
+  ##____________________________________________________________________________
+  ## Check for the executables
 
   foreach (_codaExecutable
       codacheck
@@ -96,6 +114,7 @@ if (NOT CODA_FOUND)
       message (STATUS "CODA_ROOT_DIR        = ${CODA_ROOT_DIR}")
       message (STATUS "CODA_INCLUDES        = ${CODA_INCLUDES}")
       message (STATUS "CODA_LIBRARIES       = ${CODA_LIBRARIES}")
+      message (STATUS "CODA_VERSION         = ${CODA_VERSION}"  )
       message (STATUS "CODACHECK_EXECUTABLE = ${CODACHECK_EXECUTABLE}")
       message (STATUS "CODACMP_EXECUTABLE   = ${CODACMP_EXECUTABLE}")
       message (STATUS "CODADUMP_EXECUTABLE  = ${CODADUMP_EXECUTABLE}")
