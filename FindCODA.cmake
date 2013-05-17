@@ -1,4 +1,3 @@
-
 #-------------------------------------------------------------------------------
 # Copyright (c) 2013-2013, Lars Baehren <lbaehren@gmail.com>
 # All rights reserved.
@@ -24,12 +23,17 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #-------------------------------------------------------------------------------
 
-# - Check for the presence of CODA
+# The Common Data Access toolbox (CODA) provides a set of interfaces for reading
+# remote sensing data from earth observation data files. These interfaces
+# consist of command line applications, libraries, interfaces to scientific
+# applications (such as IDL and MATLAB), and interfaces to programming languages
+# (such as C, Fortran, Python, and Java).
 #
 # The following variables are set when CODA is found:
 #  CODA_FOUND      = Set to true, if all components of CODA have been found.
 #  CODA_INCLUDES   = Include path for the header files of CODA
 #  CODA_LIBRARIES  = Link these to use CODA
+#  CODA_VERSION    = Library version
 #  CODA_LFLAGS     = Linker flags (optional)
 
 if (NOT CODA_FOUND)
