@@ -128,6 +128,18 @@ if (NOT PYTHON_FOUND)
   endif (NOT PYTHON_LIBRARIES)
 
   ##____________________________________________________________________________
+  ## Location of the site packages
+
+  if (PYTHON_EXECUTABLE)
+    execute_process(
+      COMMAND ${PYTHON_EXECUTABLE} -c import\ distutils.sysconfig\;\ print\ distutils.sysconfig.get_python_lib\(\)
+      RESULT_VARIABLE PYTHON_SITE_PACKAGES_ERROR
+      OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+  endif (PYTHON_EXECUTABLE)
+
+  ##____________________________________________________________________________
   ## Actions taken when all components have been found
 
   find_package_handle_standard_args (PYTHON DEFAULT_MSG
@@ -149,6 +161,7 @@ if (NOT PYTHON_FOUND)
       message (STATUS "PYTHON_VERSION        = ${PYTHON_VERSION}")
       message (STATUS "PYTHON_INCLUDES       = ${PYTHON_INCLUDES}")
       message (STATUS "PYTHON_LIBRARIES      = ${PYTHON_LIBRARIES}")
+      message (STATUS "PYTHON_SITE_PACKAGES  = ${PYTHON_SITE_PACKAGES}")
     endif (NOT PYTHON_FIND_QUIETLY)
   else (PYTHON_FOUND)
     if (PYTHON_FIND_REQUIRED)
@@ -163,6 +176,8 @@ if (NOT PYTHON_FOUND)
     PYTHON_ROOT_DIR
     PYTHON_INCLUDES
     PYTHON_LIBRARIES
+    PYTHON_VERSION_SERIES
+    PYTHON_SITE_PACKAGES
     )
 
 endif (NOT PYTHON_FOUND)
