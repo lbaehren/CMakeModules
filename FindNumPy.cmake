@@ -61,10 +61,17 @@ if (NOT NUMPY_FOUND)
     ##__________________________________________________________________________
     ## Check for the library
 
-    find_library (NUMPY_LIBRARIES numpy
-        HINTS ${NUMPY_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
-        PATH_SUFFIXES lib
-        )
+    unset (NUMPY_LIBRARIES)
+
+    if (PYTHON_SITE_PACKAGES)
+        find_library (NUMPY_NPYMATH_LIBRARY npymath
+            HINTS ${PYTHON_SITE_PACKAGES}/numpy/core
+            PATH_SUFFIXES lib
+            )
+        if (NUMPY_NPYMATH_LIBRARY)
+            list (APPEND NUMPY_LIBRARIES ${NUMPY_NPYMATH_LIBRARY})
+        endif (NUMPY_NPYMATH_LIBRARY)
+    endif (PYTHON_SITE_PACKAGES)
 
     ##__________________________________________________________________________
     ## Get API version of NumPy from 'numpy/numpyconfig.h'
@@ -102,7 +109,6 @@ if (NOT NUMPY_FOUND)
     if (NUMPY_FOUND)
         if (NOT NUMPY_FIND_QUIETLY)
             message (STATUS "Found components for NumPy")
-            message (STATUS "PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE}")
             message (STATUS "NUMPY_ROOT_DIR    = ${NUMPY_ROOT_DIR}")
             message (STATUS "NUMPY_INCLUDES    = ${NUMPY_INCLUDES}")
             message (STATUS "NUMPY_LIBRARIES   = ${NUMPY_LIBRARIES}")
