@@ -42,8 +42,8 @@ if (NOT NUMPY_FOUND)
         find_package (Python)
     endif (NOT PYTHON_FOUND)
 
-  ##____________________________________________________________________________
-  ## Check for the header files
+    ##__________________________________________________________________________
+    ## Check for the header files
 
     ## Use Python to determine the include directory
     execute_process (
@@ -58,35 +58,64 @@ if (NOT NUMPY_FOUND)
         set (NUMPY_INCLUDES ${NUMPY_FIND_OUTPUT})
     endif (NOT NUMPY_FIND_RESULT)
 
-  ##____________________________________________________________________________
-  ## Check for the library
+    ##__________________________________________________________________________
+    ## Check for the library
 
-  find_library (NUMPY_LIBRARIES numpy
-    HINTS ${NUMPY_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
-    PATH_SUFFIXES lib
-    )
+    find_library (NUMPY_LIBRARIES numpy
+        HINTS ${NUMPY_ROOT_DIR} ${CMAKE_INSTALL_PREFIX}
+        PATH_SUFFIXES lib
+        )
 
-  ##____________________________________________________________________________
-  ## Actions taken when all components have been found
+    ##__________________________________________________________________________
+    ## Get API version of NumPy from 'numpy/numpyconfig.h'
 
-  find_package_handle_standard_args (NUMPY DEFAULT_MSG NUMPY_INCLUDES)
+    if (PYTHON_EXECUTABLE)
+        execute_process (
+            COMMAND ${PYTHON_EXECUTABLE} -c import\ numpy\;\ print\ numpy.__version__;
+            ERROR_VARIABLE NUMPY_API_VERSION_ERROR
+            RESULT_VARIABLE NUMPY_API_VERSION_RESULT
+            OUTPUT_VARIABLE NUMPY_API_VERSION
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            )
+    else ()
+        ## Backup procedure: extract version number directly from the header file
+        if (NUMPY_INCLUDES)
+            find_file (HAVE_NUMPYCONFIG_H numpy/numpyconfig.h
+                HINTS ${NUMPY_INCLUDES}
+                )
+        endif (NUMPY_INCLUDES)
+    endif ()
 
-  if (NUMPY_FOUND)
-    if (NOT NUMPY_FIND_QUIETLY)
-      message (STATUS "Found components for NumPy")
-      message (STATUS "PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE}")
-      message (STATUS "NUMPY_ROOT_DIR    = ${NUMPY_ROOT_DIR}")
-      message (STATUS "NUMPY_INCLUDES    = ${NUMPY_INCLUDES}")
-      message (STATUS "NUMPY_LIBRARIES   = ${NUMPY_LIBRARIES}")
-    endif (NOT NUMPY_FIND_QUIETLY)
-  else (NUMPY_FOUND)
-    if (NUMPY_FIND_REQUIRED)
-      message (FATAL_ERROR "Could not find NUMPY!")
-    endif (NUMPY_FIND_REQUIRED)
-  endif (NUMPY_FOUND)
+    ## Dissect full version number into major, minor and patch version
+    if (NUMPY_API_VERSION)
+        string (REGEX REPLACE "\\." ";" _tmp ${NUMPY_API_VERSION})
+        list (GET _tmp 0 NUMPY_API_VERSION_MAJOR)
+        list (GET _tmp 1 NUMPY_API_VERSION_MINOR)
+        list (GET _tmp 2 NUMPY_API_VERSION_PATCH)
+    endif (NUMPY_API_VERSION)
 
-  ##____________________________________________________________________________
-  ## Mark advanced variables
+    ##__________________________________________________________________________
+    ## Actions taken when all components have been found
+
+    find_package_handle_standard_args (NUMPY DEFAULT_MSG NUMPY_INCLUDES)
+
+    if (NUMPY_FOUND)
+        if (NOT NUMPY_FIND_QUIETLY)
+            message (STATUS "Found components for NumPy")
+            message (STATUS "PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE}")
+            message (STATUS "NUMPY_ROOT_DIR    = ${NUMPY_ROOT_DIR}")
+            message (STATUS "NUMPY_INCLUDES    = ${NUMPY_INCLUDES}")
+            message (STATUS "NUMPY_LIBRARIES   = ${NUMPY_LIBRARIES}")
+            message (STATUS "NUMPY_API_VERSION = ${NUMPY_API_VERSION}")
+        endif (NOT NUMPY_FIND_QUIETLY)
+    else (NUMPY_FOUND)
+        if (NUMPY_FIND_REQUIRED)
+            message (FATAL_ERROR "Could not find NUMPY!")
+        endif (NUMPY_FIND_REQUIRED)
+    endif (NUMPY_FOUND)
+
+    ##__________________________________________________________________________
+    ## Mark advanced variables
 
   mark_as_advanced (
     NUMPY_ROOT_DIR
