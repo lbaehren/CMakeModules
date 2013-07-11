@@ -46,7 +46,7 @@ if (NOT PYTHON_FOUND)
 
   ##____________________________________________________________________________
   ## Extract version number
-  
+
   if (NOT PYTHON_VERSION_STRING)
     if (PYTHON_EXECUTABLE)
       ## Capture the output of 'python --version' into PYTHON_VERSION_STRING
@@ -140,6 +140,17 @@ if (NOT PYTHON_FOUND)
   endif (PYTHON_EXECUTABLE)
 
   ##____________________________________________________________________________
+  ## Python path
+
+  if (PYTHON_PYTHONPATH)
+      set (PYTHON_PYTHONPATH "${PYTHON_PYTHONPATH}:$ENV{PYTHONPATH}")
+  else (PYTHON_PYTHONPATH)
+      set (PYTHON_PYTHONPATH "$ENV{PYTHONPATH}")
+  endif (PYTHON_PYTHONPATH)
+
+  string(REGEX REPLACE "::" ":" PYTHON_PYTHONPATH ${PYTHON_PYTHONPATH})
+
+  ##____________________________________________________________________________
   ## Actions taken when all components have been found
 
   find_package_handle_standard_args (PYTHON DEFAULT_MSG
@@ -155,13 +166,14 @@ if (NOT PYTHON_FOUND)
     ## Feedback
     if (NOT PYTHON_FIND_QUIETLY)
       message (STATUS "Found components for Python:")
-      message (STATUS "PYTHON_ROOT_DIR       = ${PYTHON_ROOT_DIR}")
-      message (STATUS "PYTHON_EXECUTABLE     = ${PYTHON_EXECUTABLE}")
-      message (STATUS "PYTHON_VERSION_SERIES = ${PYTHON_VERSION_SERIES}")
-      message (STATUS "PYTHON_VERSION        = ${PYTHON_VERSION}")
-      message (STATUS "PYTHON_INCLUDES       = ${PYTHON_INCLUDES}")
-      message (STATUS "PYTHON_LIBRARIES      = ${PYTHON_LIBRARIES}")
-      message (STATUS "PYTHON_SITE_PACKAGES  = ${PYTHON_SITE_PACKAGES}")
+      message (STATUS "PYTHON_ROOT_DIR       = ${PYTHON_ROOT_DIR}"       )
+      message (STATUS "PYTHON_EXECUTABLE     = ${PYTHON_EXECUTABLE}"     )
+      message (STATUS "PYTHON_VERSION_SERIES = ${PYTHON_VERSION_SERIES}" )
+      message (STATUS "PYTHON_VERSION        = ${PYTHON_VERSION}"        )
+      message (STATUS "PYTHON_INCLUDES       = ${PYTHON_INCLUDES}"       )
+      message (STATUS "PYTHON_LIBRARIES      = ${PYTHON_LIBRARIES}"      )
+      message (STATUS "PYTHON_SITE_PACKAGES  = ${PYTHON_SITE_PACKAGES}"  )
+      message (STATUS "PYTHON_PYTHONPATH     = ${PYTHON_PYTHONPATH}"     )
     endif (NOT PYTHON_FIND_QUIETLY)
   else (PYTHON_FOUND)
     if (PYTHON_FIND_REQUIRED)
