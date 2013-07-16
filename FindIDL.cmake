@@ -156,23 +156,27 @@ if (NOT IDL_FOUND)
 
   get_filename_component(IDL_ROOT_DIR "${IDL_INCLUDES}/../.." ABSOLUTE)
 
-  set (_testIDLVersion ${CMAKE_CURRENT_BINARY_DIR}/TestIDLVersion.c)
+  if (IDL_INCLUDES)
 
-  file (WRITE  ${_testIDLVersion} "#include <stdio.h>\n")
-  file (APPEND ${_testIDLVersion} "#include <idl_export.h>\n")
-  file (APPEND ${_testIDLVersion} "int main ()\n")
-  file (APPEND ${_testIDLVersion} "{\n")
-  file (APPEND ${_testIDLVersion} "  printf (\"%i;%i;%i\", IDL_VERSION_MAJOR, IDL_VERSION_MINOR, IDL_VERSION_SUB);\n")
-  file (APPEND ${_testIDLVersion} "  return 0;\n")
-  file (APPEND ${_testIDLVersion} "}\n")
+      set (_testIDLVersion ${CMAKE_CURRENT_BINARY_DIR}/TestIDLVersion.c)
 
-  try_run (run_TestIDL compile_TestIDL
-      ${CMAKE_CURRENT_BINARY_DIR}
-      ${_testIDLVersion}
-      CMAKE_FLAGS -DINCLUDE_DIRECTORIES=${IDL_INCLUDES} -DLINK_LIBRARIES=${IDL_LIBRARIES}
-      COMPILE_OUTPUT_VARIABLE IDL_VERSION_COMPILE_OUTPUT
-      RUN_OUTPUT_VARIABLE IDL_VERSION
-      )
+      file (WRITE  ${_testIDLVersion} "#include <stdio.h>\n")
+      file (APPEND ${_testIDLVersion} "#include <idl_export.h>\n")
+      file (APPEND ${_testIDLVersion} "int main ()\n")
+      file (APPEND ${_testIDLVersion} "{\n")
+      file (APPEND ${_testIDLVersion} "  printf (\"%i;%i;%i\", IDL_VERSION_MAJOR, IDL_VERSION_MINOR, IDL_VERSION_SUB);\n")
+      file (APPEND ${_testIDLVersion} "  return 0;\n")
+      file (APPEND ${_testIDLVersion} "}\n")
+
+      try_run (run_TestIDL compile_TestIDL
+          ${CMAKE_CURRENT_BINARY_DIR}
+          ${_testIDLVersion}
+          CMAKE_FLAGS -DINCLUDE_DIRECTORIES=${IDL_INCLUDES} -DLINK_LIBRARIES=${IDL_LIBRARIES}
+          COMPILE_OUTPUT_VARIABLE IDL_VERSION_COMPILE_OUTPUT
+          RUN_OUTPUT_VARIABLE IDL_VERSION
+          )
+
+  endif (IDL_INCLUDES)
 
   if (IDL_VERSION)
       list (GET IDL_VERSION 0 IDL_VERSION_MAJOR)
