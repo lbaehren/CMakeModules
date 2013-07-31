@@ -128,6 +128,18 @@ if (NOT PYTHON_FOUND)
   endif (NOT PYTHON_LIBRARIES)
 
   ##____________________________________________________________________________
+  ## Python platform identifier
+
+  if (PYTHON_EXECUTABLE)
+    execute_process(
+      COMMAND ${PYTHON_EXECUTABLE} -c import\ sysconfig\;\ print\ sysconfig.get_platform\(\)
+      RESULT_VARIABLE PYTHON_PLATFORM_ERROR
+      OUTPUT_VARIABLE PYTHON_PLATFORM
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+  endif (PYTHON_EXECUTABLE)
+
+  ##____________________________________________________________________________
   ## Location of the site packages
 
   if (PYTHON_EXECUTABLE)
