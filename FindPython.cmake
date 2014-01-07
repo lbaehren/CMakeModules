@@ -1,4 +1,3 @@
-
 #-------------------------------------------------------------------------------
 # Copyright (c) 2013-2013, Lars Baehren <lbaehren@gmail.com>
 # All rights reserved.
@@ -82,7 +81,7 @@ if (NOT PYTHON_FOUND)
 
   if (PYTHON_EXECUTABLE)
       execute_process(
-      COMMAND ${PYTHON_EXECUTABLE} -c import\ distutils.sysconfig\;\ print\ distutils.sysconfig.get_config_vars\(\)['prefix']
+      COMMAND ${PYTHON_EXECUTABLE} -c from\ __future__\ import\ print_function\;\ import\ distutils.sysconfig\;\ print\(distutils.sysconfig.get_config_vars\(\)['prefix']\)
       RESULT_VARIABLE PYTHON_PREFIX_ERROR
       OUTPUT_VARIABLE PYTHON_PREFIX
       OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -97,7 +96,7 @@ if (NOT PYTHON_FOUND)
 
   if (PYTHON_EXECUTABLE)
     execute_process(
-      COMMAND ${PYTHON_EXECUTABLE} -c import\ distutils.sysconfig\;\ print\ distutils.sysconfig.get_python_inc\(\)
+      COMMAND ${PYTHON_EXECUTABLE} -c from\ __future__\ import\ print_function\;\ import\ distutils.sysconfig\;\ print\(distutils.sysconfig.get_python_inc\(\)\)
       RESULT_VARIABLE PYTHON_INC_ERROR
       OUTPUT_VARIABLE PYTHON_INCLUDES
       OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -132,9 +131,21 @@ if (NOT PYTHON_FOUND)
 
   if (PYTHON_EXECUTABLE)
     execute_process(
-      COMMAND ${PYTHON_EXECUTABLE} -c import\ sysconfig\;\ print\ sysconfig.get_platform\(\)
+      COMMAND ${PYTHON_EXECUTABLE} -c from\ __future__\ import\ print_function\;\ import\ sysconfig\;\ print\(sysconfig.get_platform\(\)\)
       RESULT_VARIABLE PYTHON_PLATFORM_ERROR
       OUTPUT_VARIABLE PYTHON_PLATFORM
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+  endif (PYTHON_EXECUTABLE)
+
+  ##____________________________________________________________________________
+  ## Python installation prefix
+
+  if (PYTHON_EXECUTABLE)
+    execute_process(
+      COMMAND ${PYTHON_EXECUTABLE} -c from\ __future__\ import\ print_function\;\ import\ distutils.sysconfig\;\ print\(distutils.sysconfig.PREFIX\)
+      RESULT_VARIABLE PYTHON_SITE_PREFIX_ERROR
+      OUTPUT_VARIABLE PYTHON_SITE_PREFIX
       OUTPUT_STRIP_TRAILING_WHITESPACE
     )
   endif (PYTHON_EXECUTABLE)
@@ -144,7 +155,7 @@ if (NOT PYTHON_FOUND)
 
   if (PYTHON_EXECUTABLE)
     execute_process(
-      COMMAND ${PYTHON_EXECUTABLE} -c import\ distutils.sysconfig\;\ print\ distutils.sysconfig.get_python_lib\(\)
+      COMMAND ${PYTHON_EXECUTABLE} -c from\ __future__\ import\ print_function\;\ import\ distutils.sysconfig\;\ print\(distutils.sysconfig.get_python_lib\(\)\)
       RESULT_VARIABLE PYTHON_SITE_PACKAGES_ERROR
       OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
       OUTPUT_STRIP_TRAILING_WHITESPACE
