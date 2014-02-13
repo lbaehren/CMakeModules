@@ -29,17 +29,22 @@
 macro (get_commit_hash GIT_COMMIT_HASH)
 
     execute_process (COMMAND git log -n1 --graph
-                     COMMAND grep commit
+                     COMMAND grep "\\*[\ ]* commit"
                      WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                      TIMEOUT 120
                      RESULT_VARIABLE COMMIT_HASH_RESULT_VARIABLE
                      OUTPUT_VARIABLE COMMIT_HASH_OUTPUT_VARIABLE
-                     # [OUTPUT_QUIET]
-                     # [ERROR_QUIET]
+                     ERROR_VARIABLE  COMMIT_HASH_ERROR_VARIABLE
                      OUTPUT_STRIP_TRAILING_WHITESPACE
                      # [ERROR_STRIP_TRAILING_WHITESPACE]
                     )
 
-    string (REGEX REPLACE "\\* commit " "" GIT_COMMIT_HASH ${COMMIT_HASH_OUTPUT_VARIABLE})
+    if (COMMIT_HASH_OUTPUT_VARIABLE)
+        string (REGEX REPLACE "\\*[\ ]* commit " "" GIT_COMMIT_HASH ${COMMIT_HASH_OUTPUT_VARIABLE})
+    else (COMMIT_HASH_OUTPUT_VARIABLE)
+        message (STATUS "ERROR_VARIABLE  = ${COMMIT_HASH_ERROR_VARIABLE}")
+        message (STATUS "RESULT_VARIABLE = ${COMMIT_HASH_RESULT_VARIABLE}")
+        message (WARNING "Empty output from 'git log' query - unable to extract hash!")
+    endif (COMMIT_HASH_OUTPUT_VARIABLE)
 
 endmacro (get_commit_hash)
